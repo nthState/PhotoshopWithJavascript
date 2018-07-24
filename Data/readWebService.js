@@ -12,7 +12,7 @@ function callWebservice(host, endpoint, port) {
 	return data.substr(data.indexOf("\r\n\r\n")+4);
 }
 
-const jsonStr = callWebservice("api.berrysadventures.com", "http://api.berrysadventures.com/", 80);
+const jsonStr = callWebservice("date.jsontest.com", "http://date.jsontest.com/", 80);
 const json = JSON.parse(jsonStr)
 alert(json);
 
