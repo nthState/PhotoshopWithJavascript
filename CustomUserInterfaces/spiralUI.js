@@ -1,17 +1,18 @@
-#include "/Users/chrisdavis/Documents/Projects/PhotoshopWithJavascript/Documents/spiral.js"
+#include "/Users/chrisdavis/Documents/Projects/PhotoshopWithJavascript/github/Selection/spiral.js"
 
 function buildGoldenSpiralUI() {
 
 	var currentPath = null;
 
 	var window = new Window('dialog', 'Golden Spiral');
+	
+	var document = app.activeDocument;
 
 	// X/Y
-	
 	var xypanel = window.add('panel', undefined, 'X/Y Position');
 	var xGroup = xypanel.add('group');
 	var xtext = xGroup.add('statictext', undefined, 'X Position');
-	var xslider = xGroup.add('slider', undefined, 150, 0, 300);
+	var xslider = xGroup.add('slider', undefined, 150, 0, document.width);
 	var xedit = xGroup.add('edittext');
 	xslider.onChanging = function() {
 		xedit.text = this.value;
@@ -24,7 +25,7 @@ function buildGoldenSpiralUI() {
 
 	var yGroup = xypanel.add('group');
 	var ytext = yGroup.add('statictext', undefined, 'Y Position:');
-	var yslider = yGroup.add('slider', undefined, 150, 0, 300);
+	var yslider = yGroup.add('slider', undefined, 150, 0, document.height);
 	var yedit = yGroup.add('edittext');
 	yslider.onChanging = function() {
 		yedit.text = this.value;
@@ -59,6 +60,7 @@ function buildGoldenSpiralUI() {
 	applyButton.onClick = function() {
 
 		currentPath.strokePath(ToolType.BRUSH);
+		WaitForRedraw();
 	}
 	var selectButton = buttonsGroup.add('button', undefined, 'Select')
 	selectButton.onClick = function() {
@@ -80,6 +82,16 @@ function buildGoldenSpiralUI() {
 
 		//create the path item
 		currentPath = document.pathItems.add("A spiral", lineSubPathArray);
+	}
+	
+	function WaitForRedraw() {
+		var eventWait = charIDToTypeID('Wait')
+		var enumRedrawComplete = charIDToTypeID('RdCm')
+		var typeState = charIDToTypeID('Stte')
+		var keyState = charIDToTypeID('Stte')
+		var desc = new ActionDescriptor()
+		desc.putEnumerated(keyState, typeState, enumRedrawComplete)
+		executeAction(eventWait, desc, DialogModes.NO)
 	}
 }
 
